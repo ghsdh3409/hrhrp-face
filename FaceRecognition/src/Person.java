@@ -18,6 +18,10 @@ public class Person extends Init {
 	
 	private ArrayList<Face> faces = new ArrayList<Face>();
 	
+	public Person() throws FaceppParseException, JSONException {
+		
+	}
+	
 	public Person(String aPersonId) throws FaceppParseException, JSONException {
 		setInfo(getInfo(aPersonId));
 	}
@@ -47,27 +51,35 @@ public class Person extends Init {
 			Group group = groups.get(i);
 			groupIds.add(group.getGroupId());
 		}
-		params.setFaceId(faceIds);	
+		params.setGroupId(groupIds);	
 	}
 	
 	public void setPersonId(String aPersonId) {
-		//TO DO
+		personId = aPersonId;
 	}
 	
 	public void setPersonName(String aPersonName) {
-		//TO DO
+		personName = aPersonName;
 	}
 	
 	public void setTag(String aTag) {
-		//TO DO
+		tag = aTag;
 	}
 	
-	public void setGroups(ArrayList<Group> aGroups) {
-		//TO DO
+	public void setGroup(Group aGroup) {
+		groups.add(aGroup);
 	}
 	
-	public void setFaces(ArrayList<Face> aFaces) {
-		//TO DO
+	public void setGroupVars(ArrayList<Group> aGroups) {
+		groups = aGroups;
+	}
+	
+	public void setFace(Face aFace) {
+		faces.add(aFace);
+	}
+	
+	public void setFaceVars(ArrayList<Face> aFaces) {
+		faces = aFaces;
 	}
 	
 	public String getPersonId() {
