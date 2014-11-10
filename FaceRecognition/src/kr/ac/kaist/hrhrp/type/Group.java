@@ -1,3 +1,4 @@
+package kr.ac.kaist.hrhrp.type;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -13,6 +14,10 @@ public class Group extends Init {
 	private String tag;
 	private String groupName;
 	private ArrayList<Person> persons = new ArrayList<Person>();
+	
+	public Group(String aGroupName) {
+		groupName = aGroupName;
+	}
 	
 	public Group(JSONObject groupResult) throws JSONException, FaceppParseException {
 		setGroup(groupResult);
@@ -30,6 +35,18 @@ public class Group extends Init {
 		groupId = groupResult.getString(KEY_GROUP_ID);
 		tag = groupResult.getString(KEY_TAG);
 		groupName = groupResult.getString(KEY_GROUP_NAME);
+	}
+	
+	public void setGroupName(String aGroupName) {
+		groupName = aGroupName;
+	}
+	
+	public void setGroupId(String aGroupId) {
+		groupId = aGroupId;
+	}
+	
+	public void setTag(String aTag) {
+		tag = aTag;
 	}
 	
 	public String getGroupId() {

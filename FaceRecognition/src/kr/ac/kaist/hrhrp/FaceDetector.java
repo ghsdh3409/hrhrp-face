@@ -1,4 +1,8 @@
+package kr.ac.kaist.hrhrp;
 import java.util.ArrayList;
+
+import kr.ac.kaist.hrhrp.type.Face;
+import kr.ac.kaist.hrhrp.type.Init;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -8,10 +12,10 @@ import com.facepp.error.FaceppParseException;
 import com.facepp.http.PostParameters;
 
 
-public class FaceDetiction extends Init {
+public class FaceDetector extends Init {
 	private String faceUrl;
 
-	public FaceDetiction(String url) throws FaceppParseException {
+	public FaceDetector(String url) throws FaceppParseException {
 		faceUrl = url;
 	}
 	

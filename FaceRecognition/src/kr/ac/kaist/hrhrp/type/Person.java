@@ -1,3 +1,4 @@
+package kr.ac.kaist.hrhrp.type;
 import java.util.ArrayList;
 
 import org.json.JSONArray;

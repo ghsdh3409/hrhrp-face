@@ -1,3 +1,4 @@
+package kr.ac.kaist.hrhrp.type;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
