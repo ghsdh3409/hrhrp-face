@@ -16,6 +16,7 @@ public class Init {
 	public static String KEY_GROUP = "group";
 	public static String KEY_GROUP_ID = "group_id";
 	public static String KEY_GROUP_NAME = "group_name";
+	public static String PRE_NEW_PERSON = "PERSON_";
 	
 	public static boolean DEBUG_MODE = true;
 	
