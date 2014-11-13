@@ -5,6 +5,7 @@ import kr.ac.kaist.hrhrp.type.Face;
 import kr.ac.kaist.hrhrp.type.Group;
 import kr.ac.kaist.hrhrp.type.Init;
 import kr.ac.kaist.hrhrp.type.Person;
+import kr.ac.kaist.hrhrp.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,6 +26,7 @@ public class FaceRecognizer extends Init {
 	public void recognize(Group group) throws FaceppParseException, JSONException {
 		
 		JSONObject recogResult = httpRequests.recognitionIdentify(new PostParameters().setGroupName(group.getGroupName()).setUrl(imageUrl));
+		Log.log(DEBUG_MODE, recogResult.toString());
 		JSONArray faceResult = recogResult.getJSONArray("face");
 		
 		ArrayList<Face> faces = new ArrayList<Face>();
@@ -43,6 +45,7 @@ public class FaceRecognizer extends Init {
 			if (confidence > THRESHOLD) {
 				Person person = new Person(personId);
 				person.addFace(face);
+				Log.log(DEBUG_MODE, person.getPersonName());
 			} else {
 				// TO DO : ADD Face to new person
 				Person person = new Person();
@@ -54,7 +57,7 @@ public class FaceRecognizer extends Init {
 	}
 
 	public void train(Group group) throws FaceppParseException {
-		httpRequests.trainIdentify(new PostParameters().setGroupName(group.getGroupName()));	
+		Log.log(DEBUG_MODE, httpRequests.trainIdentify(new PostParameters().setGroupName(group.getGroupName())).toString());	
 	}
 	
 	public void setImageUrl(String aImageUrl) {

@@ -29,10 +29,10 @@ public class Face extends Init {
 	}
 
 	private void setFace(JSONObject faceResult) throws JSONException {
-		faceId = faceResult.getString(KEY_FACE_ID);
-		tag = faceResult.getString(KEY_TAG);
-
-		JSONArray candidatesResult = faceResult.getJSONArray(KEY_CANDIDATE);
+		faceId = (faceResult.has(KEY_FACE_ID))?faceResult.getString(KEY_FACE_ID):null;
+		tag = (faceResult.has(KEY_TAG))?faceResult.getString(KEY_TAG):null;
+		
+		JSONArray candidatesResult = (faceResult.has(KEY_CANDIDATE))?faceResult.getJSONArray(KEY_CANDIDATE):null;
 
 		if (candidatesResult != null) {
 			JSONObject candidateResult = candidatesResult.getJSONObject(0);	

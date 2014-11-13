@@ -1,6 +1,9 @@
 package kr.ac.kaist.hrhrp.type;
 import java.util.ArrayList;
 
+import kr.ac.kaist.hrhrp.util.Log;
+import kr.ac.kaist.hrhrp.util.RandomString;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,13 +36,18 @@ public class Person extends Init {
 	
 	public void addFace(Face face) throws FaceppParseException {
 		String faceId = face.faceId;
-		httpRequests.personAddFace(new PostParameters().setPersonId(personId).setFaceId(faceId));
+
+		Log.log(DEBUG_MODE, httpRequests.personAddFace(new PostParameters().setPersonId(personId).setFaceId(faceId)).toString());
 	}
 	
-	public void create() {
+	public void create() throws FaceppParseException {
 		PostParameters params = new PostParameters();
-		params.setPersonName(personName);
-		params.setTag(tag);
+		if (personName != null)
+			params.setPersonName(personName);
+		else 
+			params.setPersonName("PERSON_" + RandomString.getRandomString(30));
+		if (tag != null)
+			params.setTag(tag);
 		ArrayList<String> faceIds = new ArrayList<String>();
 		for (int i=0; i<faces.size(); i++) {
 			Face face = faces.get(i);
@@ -47,12 +55,14 @@ public class Person extends Init {
 		}
 		params.setFaceId(faceIds);
 		
-		ArrayList<String> groupIds = new ArrayList<String>();
+		ArrayList<String> groupNames = new ArrayList<String>();
 		for (int i=0; i<groups.size(); i++) {
 			Group group = groups.get(i);
-			groupIds.add(group.getGroupId());
+			groupNames.add(group.getGroupName());
 		}
-		params.setGroupId(groupIds);	
+		params.setGroupName(groupNames);
+		
+		Log.log(DEBUG_MODE, httpRequests.personCreate(params).toString());
 	}
 	
 	public void setPersonId(String aPersonId) {
@@ -105,6 +115,7 @@ public class Person extends Init {
 	
 	private JSONObject getInfo(String personId) throws FaceppParseException, JSONException {
 		JSONObject personResult = httpRequests.personGetInfo(new PostParameters().setPersonId(personId));
+		Log.log(DEBUG_MODE, personResult.toString());
 		return personResult;
 	}
 	
