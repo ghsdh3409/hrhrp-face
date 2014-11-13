@@ -40,6 +40,20 @@ public class Person extends Init {
 		Log.log(DEBUG_MODE, httpRequests.personAddFace(new PostParameters().setPersonId(personId).setFaceId(faceId)).toString());
 	}
 	
+	public void update() throws FaceppParseException {
+		PostParameters params = new PostParameters();
+		if (personName != null)
+			params.setPersonName(personName);
+		if (tag != null)
+			params.setTag(tag);
+		if (personId != null)
+			params.setPersonId(personId);
+		if (personName != null)
+			params.setPersonName(personName);
+		
+		Log.log(DEBUG_MODE, httpRequests.personSetInfo(params).toString());		
+	}
+	
 	public void create() throws FaceppParseException {
 		PostParameters params = new PostParameters();
 		if (personName != null)
