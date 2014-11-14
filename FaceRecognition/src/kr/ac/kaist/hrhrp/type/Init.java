@@ -18,10 +18,17 @@ public class Init {
 	public static String KEY_GROUP_NAME = "group_name";
 	public static String PRE_NEW_PERSON = "PERSON_";
 	
+	public static int ERR_EXIST_NAME = 1503;
+	
 	public static boolean DEBUG_MODE = true;
-	
-	
+		
 	public static Double THRESHOLD = 60.0;
 	public HttpRequests httpRequests = new HttpRequests("72260294f4ea259086b05fc90ed893f6", "5faC_p_zlFxrKi3o8boVlddTdNpMOiEJ", false, true);
+	
+	public int getErrorCode(String errorMsg) {
+		String[] errorInfo = errorMsg.split("code=");
+		int errCode = Integer.valueOf(errorInfo[1].split(",")[0]);
+		return errCode;
+	}
 	
 }

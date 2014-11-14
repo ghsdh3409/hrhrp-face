@@ -26,42 +26,53 @@ public class Person extends Init {
 
 	}
 
-	public Person(String aPersonId) throws FaceppParseException, JSONException {
-		setInfo(getInfo(aPersonId));
+	public Person(String aPersonId, String keyType) throws FaceppParseException, JSONException {
+		setInfo(getInfo(aPersonId, keyType));
 	}
-
+	
 	public Person(JSONObject personResult) throws FaceppParseException, JSONException {
 		setInfo(personResult);
 	}
 
 	public void addFace(Face face) throws FaceppParseException {
 		String faceId = face.faceId;
-
 		Log.log(DEBUG_MODE, httpRequests.personAddFace(new PostParameters().setPersonId(personId).setFaceId(faceId)).toString());
 	}
 
-	public void update() throws FaceppParseException {
+	public void update() throws FaceppParseException, JSONException {
+		
 		PostParameters params = new PostParameters();
-		if (personName != null)
-			params.setPersonName(personName);
-		if (tag != null)
-			params.setTag(tag);
 		if (personId != null)
 			params.setPersonId(personId);
 		if (personName != null)
-			params.setPersonName(personName);
+			params.setName(personName);
+		if (tag != null)
+			params.setTag(tag);
 
-		Log.log(DEBUG_MODE, httpRequests.personSetInfo(params).toString());		
+		JSONObject updateResult = null;
+		try {
+			updateResult = httpRequests.personSetInfo(params);
+			Log.log(DEBUG_MODE,updateResult.toString());
+		} catch (FaceppParseException e) {
+			//TO DO : If name already exists, new person information has to transfer into existed person.
+			e.printStackTrace();
+			int code = getErrorCode(e.getMessage());
+			if (code == ERR_EXIST_NAME) {
+				updateExistedPerson();
+			}
+		}
 	}
 
 	public void create() throws FaceppParseException {
 		PostParameters params = new PostParameters();
+		
 		if (personName != null)
 			params.setPersonName(personName);
 		else 
 			params.setPersonName("PERSON_" + RandomString.getRandomString(30));
 		if (tag != null)
 			params.setTag(tag);
+		
 		ArrayList<String> faceIds = new ArrayList<String>();
 		for (int i=0; i<faces.size(); i++) {
 			Face face = faces.get(i);
@@ -79,6 +90,13 @@ public class Person extends Init {
 		Log.log(DEBUG_MODE, httpRequests.personCreate(params).toString());
 	}
 
+	public void delete() throws FaceppParseException {
+		// TO DO : DELETE PERSON
+		PostParameters params = new PostParameters();
+		params.setPersonId(personId);
+		Log.log(DEBUG_MODE, httpRequests.personDelete(params).toString());
+	}
+	
 	public void setPersonId(String aPersonId) {
 		personId = aPersonId;
 	}
@@ -127,12 +145,25 @@ public class Person extends Init {
 		return faces;
 	}
 
-	private JSONObject getInfo(String personId) throws FaceppParseException, JSONException {
-		JSONObject personResult = httpRequests.personGetInfo(new PostParameters().setPersonId(personId));
+	private void updateExistedPerson() throws FaceppParseException, JSONException {
+		Person person = new Person(personName, KEY_PERSON_NAME);
+		for(Face face : faces) {
+			person.addFace(face);
+		}
+		Person tempPerson = new Person(personId, KEY_PERSON_ID);
+		tempPerson.delete();
+	}
+	
+	private JSONObject getInfo(String personId, String keyType) throws FaceppParseException {
+		JSONObject personResult = null;
+		if (keyType == KEY_PERSON_ID)
+			personResult = httpRequests.personGetInfo(new PostParameters().setPersonId(personId));
+		else if (keyType == KEY_PERSON_NAME)
+			personResult = httpRequests.personGetInfo(new PostParameters().setPersonName(personId));
 		Log.log(DEBUG_MODE, personResult.toString());
 		return personResult;
 	}
-
+	
 	private void setInfo(JSONObject personResult) throws FaceppParseException, JSONException {
 		if (personResult.has(KEY_PERSON_ID))
 			personId = personResult.getString(KEY_PERSON_ID);

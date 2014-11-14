@@ -23,18 +23,28 @@ public class FaceRecognition extends Init {
 		recognizer.train(group);
 	}
 	
+	public static void personUpdate(Person person, String personName, String groupName) throws FaceppParseException, JSONException {
+		Log.log(DEBUG_MODE, person.getPersonName());
+		person.setPersonName(personName);
+		person.update();
+		Group group = new Group(groupName);
+		FaceRecognizer recognizer = new FaceRecognizer();
+		recognizer.train(group);
+	}
+	
 	public static void main(String[] args) {
 		String groupName = "DaehoonKim_Test";
 		ArrayList<String> imageUrls = new ArrayList<String>();
 		
 		Info info = new Info();
 		
-		imageUrls.add("http://itsue.kr/data/cheditor4/1404/f0fdb4c3f58e3e3f8e77162d893d3055_Qhqz4QJJ6mx4I.jpg");
+		imageUrls.add("http://img.tvreport.co.kr/images/20130807/20130807_1375853314_11589400_1.jpg");
 		try {
 			recognition(imageUrls, groupName);
 			for (Person person : info.getNewPersons()) {
-				Log.log(DEBUG_MODE, person.getPersonName());
-			}
+				String newPersonName = "Soeun Kim";
+				personUpdate(person, newPersonName, groupName);
+			}		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

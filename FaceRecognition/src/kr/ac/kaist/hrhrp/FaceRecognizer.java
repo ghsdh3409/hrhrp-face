@@ -43,7 +43,7 @@ public class FaceRecognizer extends Init {
 			String personId = candidate.getPersonId();
 			
 			if (confidence > THRESHOLD) {
-				Person person = new Person(personId);
+				Person person = new Person(personId, KEY_PERSON_ID);
 				person.addFace(face);
 				Log.log(DEBUG_MODE, person.getPersonName());
 			} else {

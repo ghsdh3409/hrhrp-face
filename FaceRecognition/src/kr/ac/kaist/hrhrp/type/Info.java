@@ -9,7 +9,6 @@ import com.facepp.error.FaceppParseException;
 
 public class Info extends Init {
 	public ArrayList<Person> getNewPersons() throws FaceppParseException, JSONException {
-		// TO DO : Return new persons
 		ArrayList<Person> newPersons = new ArrayList<Person>();
 		
 		JSONObject result = httpRequests.infoGetPersonList();
