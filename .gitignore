@@ -10,3 +10,4 @@ FaceRecognition/bin/Init.class
 FaceRecognition/bin/Person.class
 FaceRecognition/bin/Test.class
 FaceRecognition/bin/Test2.class
+*.class
