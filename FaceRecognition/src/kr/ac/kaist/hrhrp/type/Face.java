@@ -8,9 +8,9 @@ import com.facepp.error.FaceppParseException;
 
 public class Face extends Init {
 
-	String faceId;
-	String tag;
-	Candidate candidate = new Candidate();
+	private String faceId;
+	private String tag;
+	private Candidate candidate = new Candidate();
 
 	public Face() {	
 

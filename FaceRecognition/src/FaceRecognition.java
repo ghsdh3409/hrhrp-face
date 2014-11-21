@@ -13,7 +13,9 @@ import kr.ac.kaist.hrhrp.util.Log;
 
 public class FaceRecognition extends Init {
 	
-	public static void recognition(ArrayList<String> imageUrls, String groupName) throws FaceppParseException, JSONException {
+	private String groupName;
+	
+	public void recognition(ArrayList<String> imageUrls) throws FaceppParseException, JSONException {
 		Group group = new Group(groupName);
 		FaceRecognizer recognizer = new FaceRecognizer();
 		for (String imageUrl : imageUrls) {
@@ -23,7 +25,19 @@ public class FaceRecognition extends Init {
 		recognizer.train(group);
 	}
 	
-	public static void personUpdate(Person person, String personName, String groupName) throws FaceppParseException, JSONException {
+	public ArrayList<Person> getNewPerson() {
+		Info info = new Info();
+		try {
+			ArrayList<Person> newPersons = info.getNewPersons();
+			return newPersons;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public void personUpdate(Person person, String personName) throws FaceppParseException, JSONException {
 		Log.log(DEBUG_MODE, person.getPersonName());
 		person.setPersonName(personName);
 		person.update();
@@ -32,7 +46,16 @@ public class FaceRecognition extends Init {
 		recognizer.train(group);
 	}
 	
-	public static void main(String[] args) {
+	public FaceRecognition(String aGroupName) {
+		groupName = aGroupName;
+	}
+	
+	public FaceRecognition() {
+		groupName = "DaehoonKim_Test";
+	}
+	
+	/*	
+	public void main(String[] args) {
 		String groupName = "DaehoonKim_Test";
 		ArrayList<String> imageUrls = new ArrayList<String>();
 		
@@ -40,7 +63,7 @@ public class FaceRecognition extends Init {
 		
 		imageUrls.add("http://img.tvreport.co.kr/images/20130807/20130807_1375853314_11589400_1.jpg");
 		try {
-			recognition(imageUrls, groupName);
+			recognition(imageUrls);
 			for (Person person : info.getNewPersons()) {
 				String newPersonName = "Soeun Kim";
 				personUpdate(person, newPersonName, groupName);
@@ -50,4 +73,5 @@ public class FaceRecognition extends Init {
 			e.printStackTrace();
 		}
 	}
+	*/
 }
