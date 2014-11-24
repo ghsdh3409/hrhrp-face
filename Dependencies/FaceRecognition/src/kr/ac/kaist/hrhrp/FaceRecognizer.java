@@ -23,10 +23,13 @@ public class FaceRecognizer extends Init {
 	
 	}
 	
-	public ArrayList<Person> recognize(Group group) throws FaceppParseException, JSONException {
+	public ArrayList<ArrayList<Person>> recognize(Group group) throws FaceppParseException, JSONException {
 		
-		ArrayList<Person> persons = new ArrayList<Person>();
+		ArrayList<Person> recogPersons = new ArrayList<Person>();
+		ArrayList<Person> newPersons = new ArrayList<Person>();
 		
+		ArrayList<ArrayList<Person>> recogResults = new ArrayList<ArrayList<Person>>();
+				
 		JSONObject recogResult = httpRequests.recognitionIdentify(new PostParameters().setGroupName(group.getGroupName()).setUrl(imageUrl));
 		Log.log(DEBUG_MODE, recogResult.toString());
 		JSONArray faceResult = recogResult.getJSONArray("face");
@@ -49,7 +52,7 @@ public class FaceRecognizer extends Init {
 				person.addFace(face);
 				Log.log(DEBUG_MODE, person.getPersonName());
 				
-				persons.add(person);
+				recogPersons.add(person);
 				
 			} else {
 				// TO DO : ADD Face to new person
@@ -58,11 +61,14 @@ public class FaceRecognizer extends Init {
 				person.setGroup(group);
 				person.create();
 				
-				persons.add(person);
+				newPersons.add(person);
 			}			
 		}
 		
-		return persons;
+		recogResults.add(recogPersons);
+		recogResults.add(newPersons);
+		
+		return recogResults;
 	}
 
 	public void train(Group group) throws FaceppParseException {
