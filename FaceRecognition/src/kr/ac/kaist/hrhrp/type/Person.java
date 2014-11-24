@@ -35,7 +35,7 @@ public class Person extends Init {
 	}
 
 	public void addFace(Face face) throws FaceppParseException {
-		String faceId = face.faceId;
+		String faceId = face.getFaceId();
 		Log.log(DEBUG_MODE, httpRequests.personAddFace(new PostParameters().setPersonId(personId).setFaceId(faceId)).toString());
 	}
 
@@ -63,7 +63,7 @@ public class Person extends Init {
 		}
 	}
 
-	public void create() throws FaceppParseException {
+	public void create() throws FaceppParseException, JSONException {
 		PostParameters params = new PostParameters();
 		
 		if (personName != null)
@@ -87,7 +87,12 @@ public class Person extends Init {
 		}
 		params.setGroupName(groupNames);
 
-		Log.log(DEBUG_MODE, httpRequests.personCreate(params).toString());
+		JSONObject createResult = httpRequests.personCreate(params);
+		
+		String personId = createResult.getString(KEY_PERSON_ID);
+		setPersonId(personId);
+				
+		Log.log(DEBUG_MODE, createResult.toString());
 	}
 
 	public void delete() throws FaceppParseException {

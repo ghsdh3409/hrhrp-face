@@ -23,7 +23,9 @@ public class FaceRecognizer extends Init {
 	
 	}
 	
-	public void recognize(Group group) throws FaceppParseException, JSONException {
+	public ArrayList<Person> recognize(Group group) throws FaceppParseException, JSONException {
+		
+		ArrayList<Person> persons = new ArrayList<Person>();
 		
 		JSONObject recogResult = httpRequests.recognitionIdentify(new PostParameters().setGroupName(group.getGroupName()).setUrl(imageUrl));
 		Log.log(DEBUG_MODE, recogResult.toString());
@@ -46,14 +48,21 @@ public class FaceRecognizer extends Init {
 				Person person = new Person(personId, KEY_PERSON_ID);
 				person.addFace(face);
 				Log.log(DEBUG_MODE, person.getPersonName());
+				
+				persons.add(person);
+				
 			} else {
 				// TO DO : ADD Face to new person
 				Person person = new Person();
 				person.setFace(face);
 				person.setGroup(group);
 				person.create();
+				
+				persons.add(person);
 			}			
-		}		
+		}
+		
+		return persons;
 	}
 
 	public void train(Group group) throws FaceppParseException {
