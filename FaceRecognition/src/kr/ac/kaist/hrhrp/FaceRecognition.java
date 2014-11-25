@@ -56,6 +56,21 @@ public class FaceRecognition extends Init {
 			e.printStackTrace();
 		}
 	}
+	
+	public void personUpdate(String personId, String personName) {	
+		try {
+			Person person = new Person(personId, KEY_PERSON_ID);
+			Log.log(DEBUG_MODE, person.getPersonName());
+			person.setPersonName(personName);
+			person.update();
+			Group group = new Group(groupName);
+			FaceRecognizer recognizer = new FaceRecognizer();
+			recognizer.train(group);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public FaceRecognition(String aGroupName) {
 		groupName = aGroupName;
