@@ -16,65 +16,54 @@ import com.facepp.http.PostParameters;
 
 
 public class FaceRecognizer extends Init {
-	
+
 	private String imageUrl;
 
 	public FaceRecognizer() {
-	
+
 	}
-	
-	public ArrayList<ArrayList<Person>> recognize(Group group) throws FaceppParseException, JSONException {
-		
+
+	public ArrayList<Person> recognize(Group group) throws FaceppParseException, JSONException {
+
 		ArrayList<Person> recogPersons = new ArrayList<Person>();
-		ArrayList<Person> newPersons = new ArrayList<Person>();
-		
-		ArrayList<ArrayList<Person>> recogResults = new ArrayList<ArrayList<Person>>();
-				
+
 		JSONObject recogResult = httpRequests.recognitionIdentify(new PostParameters().setGroupName(group.getGroupName()).setUrl(imageUrl));
 		Log.log(DEBUG_MODE, recogResult.toString());
 		JSONArray faceResult = recogResult.getJSONArray("face");
-		
+
 		ArrayList<Face> faces = new ArrayList<Face>();
-		
+
 		for (int i=0; i<faceResult.length(); i++) {
 			Face face = new Face(faceResult.getJSONObject(i));
 			faces.add(face);
 		}
-		
+
 		for(Face face : faces) {
-			
+
 			Face.Candidate candidate = face.getCandidate();
-			Double confidence = candidate.getConfidence();
-			String personId = candidate.getPersonId();
-			
-			if (confidence > THRESHOLD) {
-				Person person = new Person(personId, KEY_PERSON_ID);
-				person.addFace(face);
-				Log.log(DEBUG_MODE, person.getPersonName());
-				
-				recogPersons.add(person);
-				
-			} else {
-				// TO DO : ADD Face to new person
+
+			if (candidate == null || candidate.getConfidence() < THRESHOLD) {
 				Person person = new Person();
 				person.setFace(face);
 				person.setGroup(group);
 				person.create();
-				
-				newPersons.add(person);
-			}			
+				recogPersons.add(person);
+			} else {
+				String personId = candidate.getPersonId();
+				Person person = new Person(personId, KEY_PERSON_ID);
+				person.addFace(face);
+				Log.log(DEBUG_MODE, person.getPersonName());
+				recogPersons.add(person);
+			}	
 		}
-		
-		recogResults.add(recogPersons);
-		recogResults.add(newPersons);
-		
-		return recogResults;
+
+		return recogPersons;
 	}
 
 	public void train(Group group) throws FaceppParseException {
 		Log.log(DEBUG_MODE, httpRequests.trainIdentify(new PostParameters().setGroupName(group.getGroupName())).toString());	
 	}
-	
+
 	public void setImageUrl(String aImageUrl) {
 		imageUrl = aImageUrl;
 	}

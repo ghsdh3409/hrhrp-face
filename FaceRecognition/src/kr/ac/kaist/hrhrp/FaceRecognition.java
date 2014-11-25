@@ -11,12 +11,16 @@ public class FaceRecognition extends Init {
 
 	private String groupName;
 
-	public ArrayList<ArrayList<Person>> recognition(String imageUrl) {
-		ArrayList<ArrayList<Person>> recogResults = new ArrayList<ArrayList<Person>>();
+	public ArrayList<Person> recognition(String imageUrl) {
+		ArrayList<Person> recogResults = new ArrayList<Person>();
 		Group group = new Group(groupName);
+		
 		FaceRecognizer recognizer = new FaceRecognizer();
-		recognizer.setImageUrl(imageUrl);
+			
 		try {
+			recognizer.train(group);
+			
+			recognizer.setImageUrl(imageUrl);
 			recogResults = recognizer.recognize(group);
 			recognizer.train(group);
 		} catch (Exception e) {

@@ -10,7 +10,7 @@ public class Face extends Init {
 
 	private String faceId;
 	private String tag;
-	private Candidate candidate = new Candidate();
+	private Candidate candidate = null;
 
 	public Face() {	
 
@@ -34,8 +34,9 @@ public class Face extends Init {
 		
 		JSONArray candidatesResult = (faceResult.has(KEY_CANDIDATE))?faceResult.getJSONArray(KEY_CANDIDATE):null;
 
-		if (candidatesResult != null) {
+		if (candidatesResult != null && candidatesResult.length() > 0) {
 			JSONObject candidateResult = candidatesResult.getJSONObject(0);	
+			candidate = new Candidate();
 			candidate.setPersonId(candidateResult.getString(KEY_PERSON_ID));
 			candidate.setPersonName(candidateResult.getString(KEY_PERSON_NAME));
 			candidate.setTag(candidateResult.getString(KEY_TAG));

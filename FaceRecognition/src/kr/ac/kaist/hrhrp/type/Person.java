@@ -14,9 +14,9 @@ import com.facepp.http.PostParameters;
 
 public class Person extends Init {
 
-	private String personId;
-	private String personName;
-	private String tag;
+	private String personId = null;
+	private String personName = null;
+	private String tag = null;
 
 	private ArrayList<Group> groups = new ArrayList<Group>();
 
