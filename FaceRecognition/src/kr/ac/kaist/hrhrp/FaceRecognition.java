@@ -43,7 +43,7 @@ public class FaceRecognition extends Init {
 		}
 	}
 
-	public void personUpdate(Person person, String personName) {
+	public Person personUpdate(Person person, String personName) {
 		Log.log(DEBUG_MODE, person.getPersonName());
 		person.setPersonName(personName);
 		try {
@@ -51,13 +51,15 @@ public class FaceRecognition extends Init {
 			Group group = new Group(groupName);
 			FaceRecognizer recognizer = new FaceRecognizer();
 			recognizer.train(group);
+			return person;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 	}
 	
-	public void personUpdate(String personId, String personName) {	
+	public Person personUpdate(String personId, String personName) {	
 		try {
 			Person person = new Person(personId, KEY_PERSON_ID);
 			Log.log(DEBUG_MODE, person.getPersonName());
@@ -66,9 +68,11 @@ public class FaceRecognition extends Init {
 			Group group = new Group(groupName);
 			FaceRecognizer recognizer = new FaceRecognizer();
 			recognizer.train(group);
+			return person;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 	}
 
