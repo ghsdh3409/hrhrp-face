@@ -155,8 +155,15 @@ public class Person extends Init {
 		for(Face face : faces) {
 			person.addFace(face);
 		}
+				
 		Person tempPerson = new Person(personId, KEY_PERSON_ID);
 		tempPerson.delete();
+		
+		setPersonId(person.getPersonId());
+		setPersonName(person.getPersonName());
+		setTag(person.getTag());
+		setGroupVars(person.getGroups());
+		setFaceVars(person.getFaces());		
 	}
 	
 	private JSONObject getInfo(String personId, String keyType) throws FaceppParseException {
