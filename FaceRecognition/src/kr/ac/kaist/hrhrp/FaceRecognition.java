@@ -81,6 +81,6 @@ public class FaceRecognition extends Init {
 	}
 
 	public FaceRecognition() {
-		groupName = "DaehoonKim_Test";
+		groupName = "HRHRP_Test";
 	}
 }
