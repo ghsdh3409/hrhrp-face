@@ -17,6 +17,12 @@ public class Init {
 	public static String KEY_GROUP_ID = "group_id";
 	public static String KEY_GROUP_NAME = "group_name";
 	public static String PRE_NEW_PERSON = "PERSON_";
+	public static String KEY_POSITION = "position";
+	public static String KEY_POS_CENTER = "center";
+	public static String KEY_POS_HEIGHT = "height";
+	public static String KEY_POS_WIDTH = "width";
+	public static String KEY_URL = "url";
+	public static String KEY_FACE_INFO = "face_info";
 	
 	public static int ERR_EXIST_NAME = 1503;
 	

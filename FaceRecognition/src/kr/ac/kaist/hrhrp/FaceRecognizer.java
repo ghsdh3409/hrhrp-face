@@ -44,14 +44,14 @@ public class FaceRecognizer extends Init {
 
 			if (candidate == null || candidate.getConfidence() < THRESHOLD) {
 				Person person = new Person();
-				person.setFace(face);
+				person.addFace(face);
 				person.setGroup(group);
 				person.create();
 				recogPersons.add(person);
 			} else {
 				String personId = candidate.getPersonId();
 				Person person = new Person(personId, KEY_PERSON_ID);
-				person.addFace(face);
+				person.updateAddedFace(face);
 				Log.log(DEBUG_MODE, person.getPersonName());
 				recogPersons.add(person);
 			}	

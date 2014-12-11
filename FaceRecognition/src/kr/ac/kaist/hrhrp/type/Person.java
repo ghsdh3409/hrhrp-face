@@ -22,21 +22,27 @@ public class Person extends Init {
 
 	private ArrayList<Face> faces = new ArrayList<Face>();
 
-	public Person() throws FaceppParseException, JSONException {
+	public Person() {
 
 	}
 
-	public Person(String aPersonId, String keyType) throws FaceppParseException, JSONException {
-		setInfo(getInfo(aPersonId, keyType));
+	public Person(String aPersonId, String keyType) {
+		try {
+			setInfo(getInfo(aPersonId, keyType));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public Person(JSONObject personResult) throws FaceppParseException, JSONException {
 		setInfo(personResult);
 	}
 
-	public void addFace(Face face) throws FaceppParseException {
+	public void updateAddedFace(Face face) throws FaceppParseException {
 		String faceId = face.getFaceId();
 		Log.log(DEBUG_MODE, httpRequests.personAddFace(new PostParameters().setPersonId(personId).setFaceId(faceId)).toString());
+		addFace(face);
 	}
 
 	public void update() throws FaceppParseException, JSONException {
@@ -122,7 +128,7 @@ public class Person extends Init {
 		groups = aGroups;
 	}
 
-	public void setFace(Face aFace) {
+	public void addFace(Face aFace) {
 		faces.add(aFace);
 	}
 
@@ -153,7 +159,7 @@ public class Person extends Init {
 	private void updateExistedPerson() throws FaceppParseException, JSONException {
 		Person person = new Person(personName, KEY_PERSON_NAME);
 		for(Face face : faces) {
-			person.addFace(face);
+			person.updateAddedFace(face);
 		}
 				
 		Person tempPerson = new Person(personId, KEY_PERSON_ID);
