@@ -16,6 +16,7 @@ public class Person extends Init {
 
 	private String personId = null;
 	private String personName = null;
+	private String personRelation = null;
 	private String tag = null;
 
 	private ArrayList<Group> groups = new ArrayList<Group>();
@@ -116,6 +117,10 @@ public class Person extends Init {
 		personName = aPersonName;
 	}
 
+	public void setPersonRelation(String aPersonRelation) {
+		personRelation = aPersonRelation;
+	}
+	
 	public void setTag(String aTag) {
 		tag = aTag;
 	}
@@ -144,6 +149,10 @@ public class Person extends Init {
 		return personName;
 	}
 
+	public String getPersonRelation() {
+		return personRelation;
+	}
+	
 	public String getTag() {
 		return tag;
 	}

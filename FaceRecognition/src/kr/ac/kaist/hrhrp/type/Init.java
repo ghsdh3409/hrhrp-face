@@ -37,4 +37,6 @@ public class Init {
 		return errCode;
 	}
 	
+	public final String groupName = "HRHRP_Test";
+	
 }
