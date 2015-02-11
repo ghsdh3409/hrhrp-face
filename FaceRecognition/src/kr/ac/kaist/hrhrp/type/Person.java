@@ -14,29 +14,36 @@ import com.facepp.http.PostParameters;
 
 public class Person extends Init {
 
-	private String personId;
-	private String personName;
-	private String tag;
+	private String personId = null;
+	private String personName = null;
+	private String personRelation = null;
+	private String tag = null;
 
 	private ArrayList<Group> groups = new ArrayList<Group>();
 
 	private ArrayList<Face> faces = new ArrayList<Face>();
 
-	public Person() throws FaceppParseException, JSONException {
+	public Person() {
 
 	}
 
-	public Person(String aPersonId, String keyType) throws FaceppParseException, JSONException {
-		setInfo(getInfo(aPersonId, keyType));
+	public Person(String aPersonId, String keyType) {
+		try {
+			setInfo(getInfo(aPersonId, keyType));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public Person(JSONObject personResult) throws FaceppParseException, JSONException {
 		setInfo(personResult);
 	}
 
-	public void addFace(Face face) throws FaceppParseException {
-		String faceId = face.faceId;
+	public void updateAddedFace(Face face) throws FaceppParseException {
+		String faceId = face.getFaceId();
 		Log.log(DEBUG_MODE, httpRequests.personAddFace(new PostParameters().setPersonId(personId).setFaceId(faceId)).toString());
+		addFace(face);
 	}
 
 	public void update() throws FaceppParseException, JSONException {
@@ -63,7 +70,7 @@ public class Person extends Init {
 		}
 	}
 
-	public void create() throws FaceppParseException {
+	public void create() throws FaceppParseException, JSONException {
 		PostParameters params = new PostParameters();
 		
 		if (personName != null)
@@ -87,7 +94,12 @@ public class Person extends Init {
 		}
 		params.setGroupName(groupNames);
 
-		Log.log(DEBUG_MODE, httpRequests.personCreate(params).toString());
+		JSONObject createResult = httpRequests.personCreate(params);
+		
+		String personId = createResult.getString(KEY_PERSON_ID);
+		setPersonId(personId);
+				
+		Log.log(DEBUG_MODE, createResult.toString());
 	}
 
 	public void delete() throws FaceppParseException {
@@ -105,6 +117,10 @@ public class Person extends Init {
 		personName = aPersonName;
 	}
 
+	public void setPersonRelation(String aPersonRelation) {
+		personRelation = aPersonRelation;
+	}
+	
 	public void setTag(String aTag) {
 		tag = aTag;
 	}
@@ -117,7 +133,7 @@ public class Person extends Init {
 		groups = aGroups;
 	}
 
-	public void setFace(Face aFace) {
+	public void addFace(Face aFace) {
 		faces.add(aFace);
 	}
 
@@ -133,6 +149,10 @@ public class Person extends Init {
 		return personName;
 	}
 
+	public String getPersonRelation() {
+		return personRelation;
+	}
+	
 	public String getTag() {
 		return tag;
 	}
@@ -148,10 +168,17 @@ public class Person extends Init {
 	private void updateExistedPerson() throws FaceppParseException, JSONException {
 		Person person = new Person(personName, KEY_PERSON_NAME);
 		for(Face face : faces) {
-			person.addFace(face);
+			person.updateAddedFace(face);
 		}
+				
 		Person tempPerson = new Person(personId, KEY_PERSON_ID);
 		tempPerson.delete();
+		
+		setPersonId(person.getPersonId());
+		setPersonName(person.getPersonName());
+		setTag(person.getTag());
+		setGroupVars(person.getGroups());
+		setFaceVars(person.getFaces());		
 	}
 	
 	private JSONObject getInfo(String personId, String keyType) throws FaceppParseException {
