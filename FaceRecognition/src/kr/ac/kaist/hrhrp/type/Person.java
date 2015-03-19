@@ -183,8 +183,10 @@ public class Person extends Init {
 	
 	private JSONObject getInfo(String personId, String keyType) throws FaceppParseException {
 		JSONObject personResult = null;
-		if (keyType == KEY_PERSON_ID)
+		if (keyType == KEY_PERSON_ID) {
+			System.out.println(personId);
 			personResult = httpRequests.personGetInfo(new PostParameters().setPersonId(personId));
+		}
 		else if (keyType == KEY_PERSON_NAME)
 			personResult = httpRequests.personGetInfo(new PostParameters().setPersonName(personId));
 		Log.log(DEBUG_MODE, personResult.toString());
