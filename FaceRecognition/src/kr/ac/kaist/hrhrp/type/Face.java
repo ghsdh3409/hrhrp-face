@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.facepp.error.FaceppParseException;
+import com.facepp.http.PostParameters;
 
 
 public class Face extends Init {
@@ -19,11 +20,9 @@ public class Face extends Init {
 
 	}
 	
-	/*
 	public Face(String aFaceId) throws JSONException, FaceppParseException {
 		setFace(getFace(aFaceId));
 	}
-	*/
 
 	public Face(JSONObject faceResult) throws FaceppParseException, JSONException {
 		setFace(faceResult);
@@ -57,7 +56,6 @@ public class Face extends Init {
 		position.setWidth(posObj.getDouble(KEY_POS_WIDTH));	
 	}
 			
-	/*
 	private JSONObject getFace(String aFaceId) throws FaceppParseException, JSONException {	
 		try {
 			JSONObject faceInfoObj = httpRequests.infoGetFace(new PostParameters().setFaceId(aFaceId));
@@ -69,16 +67,15 @@ public class Face extends Init {
 		}
 		return null;
 	}
-	*/
 
 	private void setFace(JSONObject faceResult) throws JSONException, FaceppParseException {
 		faceId = (faceResult.has(KEY_FACE_ID))?faceResult.getString(KEY_FACE_ID):null;
-		tag = (faceResult.has(KEY_TAG))?faceResult.getString(KEY_TAG):null;
+		//tag = (faceResult.has(KEY_TAG))?faceResult.getString(KEY_TAG):null; //Occured error not a String
 		
 		JSONObject posObject = new JSONObject();
 		if (faceResult.has(KEY_POSITION)) {
 			posObject = faceResult.getJSONObject(KEY_POSITION);		
-			System.out.println("hi:"+posObject.toString());
+			System.out.println("setFace:"+posObject.toString());
 			setPosition(posObject);
 		} 
 		
@@ -89,7 +86,7 @@ public class Face extends Init {
 			candidate = new Candidate();
 			candidate.setPersonId(candidateResult.getString(KEY_PERSON_ID));
 			candidate.setPersonName(candidateResult.getString(KEY_PERSON_NAME));
-			candidate.setTag(candidateResult.getString(KEY_TAG));
+			//candidate.setTag(candidateResult.getString(KEY_TAG));
 			candidate.setConfidence(candidateResult.getDouble(KEY_CONFIDENCE));
 		}
 	}

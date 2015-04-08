@@ -1,6 +1,7 @@
 package kr.ac.kaist.hrhrp;
 import java.util.ArrayList;
 
+import kr.ac.kaist.hrhrp.type.Face;
 import kr.ac.kaist.hrhrp.type.Group;
 import kr.ac.kaist.hrhrp.type.Info;
 import kr.ac.kaist.hrhrp.type.Init;
@@ -43,11 +44,11 @@ public class FaceRecognition extends Init {
 		}
 	}
 
-	public Person personUpdate(Person person, String personName) {
+	public Person personForTempUpdate(Person person, String personName) {
 		Log.log(DEBUG_MODE, person.getPersonName());
 		person.setPersonName(personName);
 		try {
-			person.update();
+			person.updateTemp();
 			Group group = new Group(groupName);
 			FaceRecognizer recognizer = new FaceRecognizer();
 			recognizer.train(group);
@@ -59,12 +60,29 @@ public class FaceRecognition extends Init {
 		}
 	}
 	
-	public Person personUpdate(String personId, String personName) {	
+	public Person personForAutoUpdate(String personId, String personName, Face face) {	
 		try {
 			Person person = new Person(personId, KEY_PERSON_ID);
 			Log.log(DEBUG_MODE, person.getPersonName());
 			person.setPersonName(personName);
-			person.update();
+			person.updateAuto(face);
+			Group group = new Group(groupName);
+			FaceRecognizer recognizer = new FaceRecognizer();
+			recognizer.train(group);
+			return person;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Person personForTempUpdate(String personId, String personName) {	
+		try {
+			Person person = new Person(personId, KEY_PERSON_ID);
+			Log.log(DEBUG_MODE, person.getPersonName());
+			person.setPersonName(personName);
+			person.updateTemp();
 			Group group = new Group(groupName);
 			FaceRecognizer recognizer = new FaceRecognizer();
 			recognizer.train(group);
