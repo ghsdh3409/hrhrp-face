@@ -47,12 +47,14 @@ public class FaceRecognizer extends Init {
 				person.addFace(face);
 				person.setGroup(group);
 				person.create();
+				person.setIsAutoDetected(false);
 				recogPersons.add(person);
 			} else {
 				String personId = candidate.getPersonId();
 				Person person = new Person(personId, KEY_PERSON_ID);
 				person.updateAddedFace(face);
 				Log.log(DEBUG_MODE, person.getPersonName());
+				person.setIsAutoDetected(true);
 				recogPersons.add(person);
 			}	
 		}

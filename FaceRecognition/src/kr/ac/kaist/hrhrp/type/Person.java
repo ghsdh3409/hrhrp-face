@@ -18,6 +18,7 @@ public class Person extends Init {
 	private String personName = null;
 	private String personRelation = null;
 	private String tag = null;
+	private Boolean isAutoDetected = null;
 
 	private ArrayList<Group> groups = new ArrayList<Group>();
 
@@ -181,6 +182,10 @@ public class Person extends Init {
 	public void setGroupVars(ArrayList<Group> aGroups) {
 		groups = aGroups;
 	}
+	
+	public void setIsAutoDetected(Boolean aIsAutoDetected) {
+		isAutoDetected = aIsAutoDetected;
+	}
 
 	public void addFace(Face aFace) {
 		faces.add(aFace);
@@ -194,6 +199,10 @@ public class Person extends Init {
 		faces = aFaces;
 	}
 
+	public Boolean getIsAutoDetected() {
+		return isAutoDetected;
+	}
+	
 	public String getPersonId() {
 		return personId;
 	}
