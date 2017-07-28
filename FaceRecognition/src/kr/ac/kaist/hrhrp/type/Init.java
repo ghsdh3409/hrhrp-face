@@ -25,6 +25,7 @@ public class Init {
 	public static String KEY_FACE_INFO = "face_info";
 	
 	public static int ERR_EXIST_NAME = 1503;
+	public static int ERR_INVALID_ARGUMENTS = 1005;
 	
 	public static boolean DEBUG_MODE = true;
 		
@@ -37,6 +38,6 @@ public class Init {
 		return errCode;
 	}
 	
-	public final String groupName = "HRHRP_Test";
+	public final String GROUP_NAME = "HRHRP_Test";
 	
 }
